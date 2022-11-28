@@ -1,10 +1,11 @@
 {
-    "appPort":5000,
-    "jwtEncriptionKey":"bodec him ze hoved, mekave she ken",
+    "appPort": 5000,
+    
+    "jwtEncriptionKey": "bodec him ze hoved, mekave she ken",
+    "tokenExpirationTime": "10m",
 
-
-    "dbHost":"localhost",
-    "dbPort":3306,
-    "dbName":"vacationsdb",
-    "dbUser":"root"
+    "dbHost": "localhost",
+    "dbPort": 3306,
+    "dbName": "vacationsdb",
+    "dbUser": "root"
 }

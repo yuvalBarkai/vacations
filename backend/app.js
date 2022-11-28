@@ -11,10 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/public", publicController); 
-app.use("/auth", authController); 
-app.use("/medium", mediumController); 
-app.use("/admin", adminController); 
+app.use("/public", publicController);
+app.use("/auth", authController);
+app.use("/medium", mediumController);
+app.use("/admin", adminController);
 
 
 app.use("*", (req, res) => {
