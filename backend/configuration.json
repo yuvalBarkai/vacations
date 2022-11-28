@@ -1,0 +1,10 @@
+{
+    "appPort":5000,
+    "jwtEncriptionKey":"bodec him ze hoved, mekave she ken",
+
+
+    "dbHost":"localhost",
+    "dbPort":3306,
+    "dbName":"vacationsdb",
+    "dbUser":"root"
+}

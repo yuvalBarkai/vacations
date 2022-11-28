@@ -1,5 +1,5 @@
-export const signin = () => {
-    return { type: "SIGN_IN" }
+export const signin = (isAdmin: boolean) => {
+    return { type: "SIGN_IN", admin: isAdmin }
 }
 
 export const signout = () => {

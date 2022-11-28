@@ -1,9 +1,16 @@
-const loggedReducer = (state = false, action: { type: string }) => {
+import { Action } from "@reduxjs/toolkit";
+
+interface actionType {
+    type: string;
+    admin: boolean;
+}
+
+const loggedReducer = (state = { isLogged: false, isAdmin: false }, action: actionType) => {
     switch (action.type) {
         case "SIGN_IN":
-            return true;
+            return { isLogged: true, isAdmin: action.admin };
         case "SIGN_OUT":
-            return false;
+            return { isLogged: false, isAdmin: false };
         default:
             return state;
     }
