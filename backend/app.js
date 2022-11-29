@@ -11,20 +11,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/public", publicController);
-app.use("/auth", authController);
-app.use("/medium", mediumController);
-app.use("/admin", adminController);
-
-app.use("*", (req, res) => {
-    res.send(`Route not found ${req.originalUrl}`);
-});
-
-app.listen(config.appPort, () => {
+const listener = app.listen(config.appPort, () => {
     console.log(`Listening at ${config.appPort}`);
 }).on("error", (err) => {
     if (err.code == "EADDRINUSE")
         console.log(`Error: The port ${config.appPort} is taken`);
     else
         console.log(`Error: Unknown Error`);
+});
+
+const mediumLogic = require("./business-logic-layer/medium-logic");
+mediumLogic.socketInit(listener);
+
+app.use("/public", publicController);
+app.use("/auth", authController);
+
+// mediumController.params.listener = listener;
+app.use("/medium", mediumController);
+app.use("/admin", adminController);
+
+app.use("*", (req, res) => {
+    res.send(`Route not found ${req.originalUrl}`);
 });

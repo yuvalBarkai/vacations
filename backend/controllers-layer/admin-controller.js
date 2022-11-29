@@ -3,6 +3,10 @@ const verifyAdmin = require("../middleware/verify-admin");
 const verifyLoggedIn = require("../middleware/verify-logged-in");
 const verifyVactionValid = require("../middleware/verify-vacation-valid");
 const adminLogic = require("../business-logic-layer/admin-logic");
+const mediumLogic = require("../business-logic-layer/medium-logic");
+
+const fileUpload = require("express-fileupload");
+const path = require("path");
 
 const router = express.Router();
 
@@ -18,8 +22,10 @@ router.delete("/vacations/:id", async (req, res) => {
         const result = await adminLogic.deleteVacationByIdAsync(id);
         if (result.affectedRows < 1)
             res.status(400).send({ message: `Error: The id ${id} was not found and was not deleted` });
-        else
+        else {
+            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
             res.send(result);
+        }
     }
     catch (err) {
         res.status(500).send({ message: "Error: Server Error" });
@@ -28,21 +34,32 @@ router.delete("/vacations/:id", async (req, res) => {
 });
 
 router.use(verifyVactionValid);
+router.use(fileUpload());
 
 router.post("/vacations", async (req, res) => {
     try {
-        const body = req.body;
-        body.followers = 0;
-        // add image_location and handle the image
+        const body = req.body.vacation;
+        const image = req.files.image;
+        if (!image)
+            res.status(400).send({ message: "Error: please send a picture with the vacation" });
+        else {
+            body.followers = 0;
+            body.image_location = image.name;
+            const absolutePath = path.join(__dirname, "..", "images", image.name);
+            await image.mv(absolutePath);
+            const result = await adminLogic.insertVacationAsync(body);
+            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
 
-        const result = await adminLogic.insertVacationAsync(body);
-        res.send(result);
+            res.send(result);
+        }
     }
     catch (err) {
         res.status(500).send({ message: "Error: Server Error" });
         console.log(err);
     }
 });
+
+router.use(express.json());
 
 router.put("/vacations/:id", async (req, res) => {
     try {
@@ -53,8 +70,10 @@ router.put("/vacations/:id", async (req, res) => {
         const result = await adminLogic.updateVacationByIdAsync(id, body);
         if (result.affectedRows < 1)
             res.status(404).send({ message: `Error: The id ${id} was not found` });
-        else
+        else {
+            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
             res.send(result);
+        }
     }
     catch (err) {
         res.status(500).send({ message: "Error: Server Error" });
