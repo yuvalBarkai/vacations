@@ -16,7 +16,6 @@ app.use("/auth", authController);
 app.use("/medium", mediumController);
 app.use("/admin", adminController);
 
-
 app.use("*", (req, res) => {
     res.send(`Route not found ${req.originalUrl}`);
 });

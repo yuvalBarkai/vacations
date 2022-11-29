@@ -2,7 +2,7 @@
     "appPort": 5000,
     
     "jwtEncriptionKey": "bodec him ze hoved, mekave she ken",
-    "tokenExpirationTime": "10m",
+    "tokenExpirationTime": "30 minutes",
 
     "dbHost": "localhost",
     "dbPort": 3306,
