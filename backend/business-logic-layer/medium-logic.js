@@ -18,8 +18,8 @@ function socketInit(listener) {
                 socket.emit("error", { message: "Error: server error" });
             }
         };
-        vacationsUpdate();
         module.exports.vacationsUpdate = vacationsUpdate;
+        vacationsUpdate();
 
         socket.on("disconnect", () => {
             console.log("A client is disconnected");
@@ -31,7 +31,7 @@ function patchVacationFollowByIdAsync(id, isFollow) {
     let operator = "-";
     if (isFollow)
         operator = "+";
-        
+
     return dal.executeQueryAsync(`
         UPDATE vacations SET followers = followers ${operator} "1" WHERE vacation_id = "${id}"
     `);

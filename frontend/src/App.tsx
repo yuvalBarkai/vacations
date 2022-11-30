@@ -6,14 +6,10 @@ import NavigationLinks from './routing/NavigationLinks';
 import Routing from './routing/Routing';
 
 function App() {
-    const isLogged = useSelector((state: any) => state.isLogged);
-    const dispatch = useDispatch();
     return (
         <div className="App">
             <header>
                 <h1>Vacations</h1>
-                Logged status: {isLogged ? <h4>Logged</h4> : <h4>Not logged</h4>}
-                <button onClick={() => isLogged ? dispatch(signout()) : dispatch(signin(true))}>Change</button>
             </header>
             <BrowserRouter>
                 <nav>
