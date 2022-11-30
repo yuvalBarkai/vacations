@@ -6,18 +6,19 @@ let socketsManager;
 function socketInit(listener) {
     socketsManager = io(listener, { cors: { origin: "*" } });
 
+    const vacationsUpdate = async () => {
+        try {
+            const vacations = await dal.executeQueryAsync(`SELECT * FROM vacations`);
+            socketsManager.sockets.emit("vacations-update", vacations);
+        }
+        catch (error) {
+            console.log(error);
+            socketsManager.sockets.emit("error", { message: "Error: server error" });
+        }
+    };
+
     socketsManager.sockets.on("connection", socket => {
         console.log("A client is connected");
-        let vacationsUpdate = async () => {
-            try {
-                const vacations = await dal.executeQueryAsync(`SELECT * FROM vacations`);
-                socket.emit("vacations-update", vacations);
-            }
-            catch (error) {
-                console.log(error);
-                socket.emit("error", { message: "Error: server error" });
-            }
-        };
         module.exports.vacationsUpdate = vacationsUpdate;
         vacationsUpdate();
 
