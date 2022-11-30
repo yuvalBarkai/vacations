@@ -1,7 +1,7 @@
-import { VacationType } from "../types/types"
+import { UserType, VacationType } from "./types"
 
-export const signin = (isAdmin: boolean) => {
-    return { type: "SIGN_IN", admin: isAdmin }
+export const signin = (userData: UserType) => {
+    return { type: "SIGN_IN", user: userData }
 }
 
 export const signout = () => {

@@ -1,4 +1,4 @@
-import { VacationType } from "../types/types";
+import { VacationType } from "../types";
 
 const vacationsReducer = (state = [], action: { type: string, data: VacationType[] }) => {
     switch (action.type) {

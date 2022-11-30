@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY')
-            res.status(400).send({ message: "That username is taken" });
+            res.status(401).send({ message: "That username is taken" });
         else
             res.status(500).send({ message: "Error: Server Error" });
         console.log(err);

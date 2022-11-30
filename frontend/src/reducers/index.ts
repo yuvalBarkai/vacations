@@ -3,7 +3,7 @@ import loggedReducer from './loggedReducer';
 import vacationsReducer from './vacationsReducer';
 
 const allReducers = combineReducers({
-    isLogged: loggedReducer,
+    logged: loggedReducer,
     vacations:vacationsReducer,
 });
 
