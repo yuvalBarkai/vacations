@@ -2,6 +2,10 @@
   text-align: center;
 }
 
-main{
+main {
   height: 250px;
+}
+
+.active {
+  font-weight: 900;
 }

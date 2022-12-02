@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { signin, updateVacatios } from "../../actions";
 import "./Login.css"
@@ -27,8 +27,12 @@ function Login() {
             socket = io("http://localhost:5000");
             socket.on("vacations-update", vacations => {
                 dispatch(updateVacatios(vacations));
+                navigate("/home");
             });
-            navigate("/home");
+            socket.on("error", (error) => {
+                console.log(error);
+                setResult(error.message);
+            })
         }
         catch (err) {
             const error = err as AxiosError;

@@ -23,7 +23,7 @@ router.delete("/vacations/:id", async (req, res) => {
         if (result.affectedRows < 1)
             res.status(400).send({ message: `Error: The id ${id} was not found and was not deleted` });
         else {
-            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
+            mediumLogic.allUsersVacationUpdate();
             res.send(result);
         }
     }
@@ -48,8 +48,7 @@ router.post("/vacations", async (req, res) => {
             const absolutePath = path.join(__dirname, "..", "images", image.name);
             await image.mv(absolutePath);
             const result = await adminLogic.insertVacationAsync(body);
-            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
-
+            mediumLogic.allUsersVacationUpdate();
             res.send(result);
         }
     }
@@ -71,7 +70,7 @@ router.put("/vacations/:id", async (req, res) => {
         if (result.affectedRows < 1)
             res.status(404).send({ message: `Error: The id ${id} was not found` });
         else {
-            if (mediumLogic.vacationsUpdate) mediumLogic.vacationsUpdate();
+            mediumLogic.allUsersVacationUpdate();
             res.send(result);
         }
     }

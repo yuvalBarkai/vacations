@@ -20,8 +20,8 @@ const listener = app.listen(config.appPort, () => {
         console.log(`Error: Unknown Error`);
 });
 
-const mediumLogic = require("./business-logic-layer/medium-logic");
-mediumLogic.socketInit(listener);
+const { socketInit } = require("./business-logic-layer/medium-logic");
+socketInit(listener);
 
 app.use("/public", publicController);
 app.use("/auth", authController);

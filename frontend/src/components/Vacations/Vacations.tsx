@@ -5,15 +5,15 @@ import UserVacation from "./UserVacation";
 import "./Vacations.css";
 
 function Vacations() {
-    const userInformation = useSelector((state: ReduxState) => state.logged);
+    const userInfo = useSelector((state: ReduxState) => state.logged);
     const vacationList = useSelector((state: ReduxState) => state.vacations);
-
+    
     return (
         <div>
-            {userInformation.isLogged
+            {userInfo.isLogged
                 ?
                 <div className="vacationList">
-                    {userInformation.isAdmin
+                    {userInfo.isAdmin
                         ?
                         vacationList.map(v => <AdminVacation vacation={v} key={v.vacation_id} />)
                         :

@@ -9,6 +9,15 @@ export interface VacationType {
     followers: number;
 }
 
+export interface AddVacationForm {
+    vacation_description: string;
+    vacation_destination: string;
+    image: File;
+    start_date: string;
+    end_date: string;
+    price: number;
+}
+
 export interface UserType {
     first_name: string;
     last_name: string;
