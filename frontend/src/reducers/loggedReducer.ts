@@ -8,7 +8,7 @@ interface actionType {
 const loggedReducer = (state = { isLogged: false, isAdmin: false, userData: {} }, action: actionType) => {
     switch (action.type) {
         case "SIGN_IN":
-            return { isLogged: true, isAdmin: action.user.user_id == 1, userData: action.user };
+            return { isLogged: true, isAdmin: action.user.user_id === 1, userData: action.user };
         case "SIGN_OUT":
             return { isLogged: false, isAdmin: false, userData: {} };
         default:

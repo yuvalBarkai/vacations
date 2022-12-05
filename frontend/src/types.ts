@@ -8,7 +8,7 @@ export interface VacationType {
     price: number;
     followers: number;
 }
-
+// combine them with optional ?
 export interface AddVacationForm {
     vacation_description: string;
     vacation_destination: string;
@@ -22,11 +22,12 @@ export interface UserType {
     first_name: string;
     last_name: string;
     token: string;
-    user_id: 1;
+    user_id: number;
     username: string;
 }
 
 export interface ReduxState {
     logged: { isLogged: boolean, isAdmin: boolean, userData: UserType };
     vacations: VacationType[];
+    checkedVacations: number[];
 }

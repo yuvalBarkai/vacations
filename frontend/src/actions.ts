@@ -11,3 +11,11 @@ export const signout = () => {
 export const updateVacatios = (vacations: VacationType[]) => {
     return { type: "VACATIONS", data: vacations }
 }
+
+export const checked = (vId: number) => {
+    return { type: "CHECKED", vId }
+}
+
+export const unChecked = (vId: number) => {
+    return { type: "UN_CHECKED", vId }
+}
