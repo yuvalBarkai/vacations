@@ -18,7 +18,7 @@ function UserVacation(props: { vacation: VacationType }) {
       const isChecked = (e.target as HTMLInputElement).checked;
       const checkedVac = [...checkedVacations];
       const list = [...vacations];
-      await axios.patch(
+      await axios.patch( // consider declaring for the user that he follows this vacation
         `http://localhost:5000/medium/follow/${v.vacation_id}`,
         { isFollow: isChecked },
         { headers: { Authorization: `bearer ${userInfo.userData.token}` } }
@@ -31,19 +31,11 @@ function UserVacation(props: { vacation: VacationType }) {
         dispatch(unChecked(v.vacation_id));
         checkedVac.splice(checkedVac.indexOf(v.vacation_id), 1);
       }
-
-      dispatch(
-        updateVacatios(
-          list.sort((a, b) => {
-            return checkedVac.includes(a.vacation_id) &&
-              checkedVac.includes(b.vacation_id)
-              ? 0
-              : checkedVac.includes(a.vacation_id)
-              ? -1
-              : 1;
-          })
-        )
-      );
+      // sorting vacations by having the vacations in checkVac first
+      dispatch(updateVacatios(list.sort((a, b) => {
+        return checkedVac.includes(a.vacation_id) &&
+          checkedVac.includes(b.vacation_id) ? 0 : checkedVac.includes(a.vacation_id) ? -1 : 1;
+      })));
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +46,7 @@ function UserVacation(props: { vacation: VacationType }) {
       <h2>{v.vacation_destination}</h2>
       <input type="checkbox" onChange={follow} />
       <div>{v.vacation_description}</div>
-      {v.image_location}
+      <img className="image" src={`http://localhost:5000/public/images/${v.image_location}`} alt="Server Error"/>
     </div>
   );
 }

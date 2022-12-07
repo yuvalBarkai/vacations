@@ -33,12 +33,13 @@ router.delete("/vacations/:id", async (req, res) => {
     }
 });
 
-router.use(verifyVactionValid);
-router.use(fileUpload());
+router.use([fileUpload(), verifyVactionValid]);
+// consider checking if this image name exists and changing the name via middleware
 
 router.post("/vacations", async (req, res) => {
     try {
-        const body = req.body.vacation;
+        const body = req.body;
+        console.log(body);
         const image = req.files.image;
         if (!image)
             res.status(400).send({ message: "Error: please send a picture with the vacation" });
@@ -64,14 +65,20 @@ router.put("/vacations/:id", async (req, res) => {
     try {
         const body = req.body;
         const id = req.params.id;
-        // add image_location and handle the image
-
-        const result = await adminLogic.updateVacationByIdAsync(id, body);
-        if (result.affectedRows < 1)
-            res.status(404).send({ message: `Error: The id ${id} was not found` });
+        const image = req.files.image;
+        if (!image)
+            res.status(400).send({ message: "Error: please send a picture with the vacation" });
         else {
-            mediumLogic.allUsersVacationUpdate();
-            res.send(result);
+            body.image_location = image.name;
+            const absolutePath = path.join(__dirname, "..", "images", image.name);
+            await image.mv(absolutePath);
+            const result = await adminLogic.updateVacationByIdAsync(id, body);
+            if (result.affectedRows < 1)
+                res.status(404).send({ message: `Error: The id ${id} was not found` });
+            else {
+                mediumLogic.allUsersVacationUpdate();
+                res.send(result);
+            }
         }
     }
     catch (err) {

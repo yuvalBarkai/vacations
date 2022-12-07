@@ -9,7 +9,9 @@ function NavigationLinks() {
         <>
             <NavLink to="/login">Login</NavLink> &nbsp;&nbsp;
             {userInfo.isAdmin &&
-            <NavLink to="/addVacation">Add Vacation</NavLink>}
+            <NavLink to="/addVacation">Add Vacation</NavLink>} &nbsp;&nbsp;
+            {userInfo.isAdmin &&
+            <NavLink to="/followStats">Follow Statistics</NavLink>} &nbsp;&nbsp;
         </>
     )
 }

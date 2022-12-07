@@ -12,6 +12,10 @@ export const updateVacatios = (vacations: VacationType[]) => {
     return { type: "VACATIONS", data: vacations }
 }
 
+export const clearVacations = () =>{
+    return {type: "CLEAR_VACATIONS"}
+}
+
 export const checked = (vId: number) => {
     return { type: "CHECKED", vId }
 }

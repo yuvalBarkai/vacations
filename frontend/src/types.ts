@@ -8,11 +8,11 @@ export interface VacationType {
     price: number;
     followers: number;
 }
-// combine them with optional ?
+
 export interface AddVacationForm {
     vacation_description: string;
     vacation_destination: string;
-    image: File;
+    image: File[];
     start_date: string;
     end_date: string;
     price: number;

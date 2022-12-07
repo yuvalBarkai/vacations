@@ -1,13 +1,27 @@
-import { VacationType } from "../../types"
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { ReduxState, VacationType } from "../../types"
 
 function AdminVacation(props: { vacation: VacationType }) {
     const v = props.vacation;
+    const userInfo = useSelector((state: ReduxState) => state.logged);
+    const deleteVacation = async () => {
+        try {
+            await axios.delete(`http://localhost:5000/admin/vacations/${v.vacation_id}`,
+                { headers: { Authorization: `bearer ${userInfo.userData.token}` } });
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
         <div>
             <h1>ADMIN</h1>
+            <NavLink to={`/editVacation/${v.vacation_id}`}>Edit</NavLink>
+            <button onClick={deleteVacation}>DELETE</button>
             <h2>{v.vacation_destination}</h2>
             <div>{v.vacation_description}</div>
-            {v.image_location}
+            <img className="image" src={`http://localhost:5000/public/images/${v.image_location}`} alt="Server Error" />
         </div>
     )
 }

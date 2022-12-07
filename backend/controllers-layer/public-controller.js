@@ -1,6 +1,8 @@
 const express = require("express");
 const validator = require("../validations/validator");
 const publicLogic = require("../business-logic-layer/public-logic");
+const fs = require("fs");
+const path = require("path");
 
 const router = express.Router();
 
@@ -19,6 +21,20 @@ router.post("/register", async (req, res) => {
             res.status(401).send({ message: "That username is taken" });
         else
             res.status(500).send({ message: "Error: Server Error" });
+        console.log(err);
+    }
+});
+
+router.get("/images/:imageName", (req, res) => {
+    try{
+        const imageName = req.params.imageName;
+        let imageAddress = path.join(__dirname,"..", "images", imageName);
+        if(!fs.existsSync(imageAddress))
+            imageAddress = path.join(__dirname,"..", "images", "notFoundTemplate.png");
+
+        res.sendFile(imageAddress);
+    } catch(err){
+        res.status(500).send({ message: "Server Error" });
         console.log(err);
     }
 });

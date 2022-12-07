@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
-import { signin, updateVacatios } from "../../actions";
+
+import { signin } from "../../actions";
+import socket from "../../services/SocketService";
 import "./Login.css"
 
 interface loginType {
@@ -13,7 +14,7 @@ interface loginType {
 }
 
 function Login() {
-    let socket: Socket | undefined;
+
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm<loginType>();
     const [result, setResult] = useState("");
@@ -24,15 +25,8 @@ function Login() {
             setResult("");
             const response = await axios.post("http://localhost:5000/auth/login", loginInfo);
             dispatch(signin(response.data));
-            socket = io("http://localhost:5000");
-            socket.on("vacations-update", vacations => {
-                dispatch(updateVacatios(vacations));
-                navigate("/home");
-            });
-            socket.on("error", (error) => {
-                console.log(error);
-                setResult(error.message);
-            })
+            socket.connect(dispatch);
+            navigate("/home");
         }
         catch (err) {
             const error = err as AxiosError;
@@ -47,7 +41,7 @@ function Login() {
             <h2>Login</h2>
             <div className="usernameArea">
                 <label>username: </label>
-                <input type="text" {...register("username", { required: true, minLength: 3, maxLength: 30 })} />
+                <input type="text" {...register("username", { required: true, minLength: 3, maxLength: 30 })} autoFocus={true} />
                 {errors.username?.type === "required" && <span className="error"> Missing username </span>}
                 {errors.username?.type === "maxLength" && <span className="error"> Must be under 30 characters </span>}
                 {errors.username?.type === "minLength" && <span className="error"> Must be over 2 characters </span>}
