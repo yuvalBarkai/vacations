@@ -39,7 +39,6 @@ router.use([fileUpload(), verifyVactionValid]);
 router.post("/vacations", async (req, res) => {
     try {
         const body = req.body;
-        console.log(body);
         const image = req.files.image;
         if (!image)
             res.status(400).send({ message: "Error: please send a picture with the vacation" });

@@ -48,7 +48,7 @@ function Login() {
             </div>
             <div className="passwordArea">
                 <label>password: </label>
-                <input type="text" {...register("password", { required: true, minLength: 3, maxLength: 40 })} />
+                <input type="password" {...register("password", { required: true, minLength: 3, maxLength: 40 })} />
                 {errors.password?.type === "required" && <span className="error"> Missing password </span>}
                 {errors.password?.type === "maxLength" && <span className="error"> Must be under 40 characters </span>}
                 {errors.password?.type === "minLength" && <span className="error"> Must be over 2 characters </span>}

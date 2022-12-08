@@ -25,8 +25,6 @@ socketInit(listener);
 
 app.use("/public", publicController);
 app.use("/auth", authController);
-
-// mediumController.params.listener = listener;
 app.use("/medium", mediumController);
 app.use("/admin", adminController);
 

@@ -7,7 +7,6 @@ import "./Vacations.css";
 function Vacations() {
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const vacationList = useSelector((state: ReduxState) => state.vacations);
-    
     return (
         <div>
             {userInfo.isLogged

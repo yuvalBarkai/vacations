@@ -20,8 +20,10 @@ router.patch("/follow/:id", async (req, res) => {
             const result = await mediumLogic.patchVacationFollowByIdAsync(id, isFollow);
             if (result.affectedRows < 1)
                 res.status(404).send({ message: `The id ${id} was not found` });
-            else
+            else {
                 res.send(result);
+                mediumLogic.allUsersVacationUpdate();
+            }
         }
     } catch (err) {
         res.status(500).send({ message: "Error: Server Error" });

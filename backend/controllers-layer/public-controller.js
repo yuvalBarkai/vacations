@@ -33,7 +33,8 @@ router.get("/images/:imageName", (req, res) => {
             imageAddress = path.join(__dirname,"..", "images", "notFoundTemplate.png");
 
         res.sendFile(imageAddress);
-    } catch(err){
+    } 
+    catch(err){
         res.status(500).send({ message: "Server Error" });
         console.log(err);
     }

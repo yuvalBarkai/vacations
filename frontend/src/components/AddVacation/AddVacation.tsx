@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { useSelector } from "react-redux";
 import { AddVacationForm, ReduxState } from "../../types"
@@ -6,10 +7,13 @@ import { AddVacationForm, ReduxState } from "../../types"
 function AddVacation() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<AddVacationForm>();
     const userInfo = useSelector((state: ReduxState) => state.logged);
+    const [resultMsg, setResultMsg] = useState("");
 
     const submit = async (newVacation: AddVacationForm) => {
         try {
-            const formData = new FormData(); 
+            // add date validation like Joi
+            setResultMsg("");
+            const formData = new FormData();
             // didnt work with a loop because typescript was complaining..
             formData.append("vacation_description", newVacation.vacation_description);
             formData.append("vacation_destination", newVacation.vacation_destination);
@@ -20,10 +24,12 @@ function AddVacation() {
 
             const response = await axios.post(`http://localhost:5000/admin/vacations`, formData,
                 { headers: { Authorization: `bearer ${userInfo.userData.token}` } });
-            console.log(response);
+            setResultMsg(`The vacation was succesfully registered with the id ${response.data.insertId}`)
             reset();
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
+            const error = err as AxiosError;
+            const errorSent = error.response?.data as {message:string}[]
+            setResultMsg(errorSent[0].message);
         }
     }
 
@@ -65,7 +71,7 @@ function AddVacation() {
                 {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
             </div>
             <div>
-
+                {resultMsg}
             </div>
             <button>Submit</button>
         </form>
