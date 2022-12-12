@@ -17,7 +17,7 @@ class SocketService {
     static disconnect(dispatch:(action: { type: string }) => void){
         SocketService.socket?.disconnect();
         dispatch(clearVacations());
-        dispatch(signout())
+        dispatch(signout());
     }
 }
 

@@ -30,8 +30,12 @@ function updateVacationByIdAsync(id, body) {
     `);
 }
 
+function selectImageNameByIdAsync(id){
+    return dal.executeQueryAsync(`SELECT image_location FROM vacations WHERE vacation_id = "${id}"`);
+}
 module.exports = {
     insertVacationAsync,
     deleteVacationByIdAsync,
-    updateVacationByIdAsync
+    updateVacationByIdAsync,
+    selectImageNameByIdAsync
 }

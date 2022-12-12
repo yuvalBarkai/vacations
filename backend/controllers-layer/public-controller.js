@@ -3,6 +3,7 @@ const validator = require("../validations/validator");
 const publicLogic = require("../business-logic-layer/public-logic");
 const fs = require("fs");
 const path = require("path");
+const configuration = require("../configuration.json");
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY')
-            res.status(401).send({ message: "That username is taken" });
+            res.status(409).send({ message: "That username is taken" });
         else
             res.status(500).send({ message: "Error: Server Error" });
         console.log(err);
@@ -30,7 +31,7 @@ router.get("/images/:imageName", (req, res) => {
         const imageName = req.params.imageName;
         let imageAddress = path.join(__dirname,"..", "images", imageName);
         if(!fs.existsSync(imageAddress))
-            imageAddress = path.join(__dirname,"..", "images", "notFoundTemplate.png");
+            imageAddress = path.join(__dirname,"..", "images", configuration.notFoundImgName);
 
         res.sendFile(imageAddress);
     } 

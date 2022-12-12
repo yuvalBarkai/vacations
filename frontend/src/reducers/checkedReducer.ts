@@ -1,6 +1,6 @@
 
 
-function checkedReducer(state: number[] = [], action: { type: string, vId: number }) {
+function checkedReducer(state: number[] = [], action: { type: string, vId: number, data: number[] }) {
     const list = [...state];
     switch (action.type) {
         case "CHECKED":
@@ -10,6 +10,10 @@ function checkedReducer(state: number[] = [], action: { type: string, vId: numbe
             const index = list.indexOf(action.vId);
             list.splice(index, 1);
             return list;
+        case "UPDATE_CHECKED":
+            return action.data;
+        case "CLEAR_CHECKED":
+            return [];
         default:
             return list;
     }

@@ -12,14 +12,21 @@ export const updateVacatios = (vacations: VacationType[]) => {
     return { type: "VACATIONS", data: vacations }
 }
 
-export const sortVacactions = (checkedVac:number[]) =>{
-    return {type:"SORT_VACATIONS", checkedVac}
+export const sortVacactions = (checkedVac: number[]) => {
+    return { type: "SORT_VACATIONS", checkedVac }
 }
 
-export const clearVacations = () =>{
-    return {type: "CLEAR_VACATIONS"}
+export const clearVacations = () => {
+    return { type: "CLEAR_VACATIONS" }
 }
 
+export const updateChecked = (checkedVac: number[]) => {
+    return { type: "UPDATE_CHECKED", data: checkedVac }
+}
+
+export const clearChecked = () => {
+    return { type: "CLEAR_CHECKED" }
+}
 export const checked = (vId: number) => {
     return { type: "CHECKED", vId }
 }

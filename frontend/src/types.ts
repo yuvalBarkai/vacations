@@ -24,6 +24,8 @@ export interface UserType {
     token: string;
     user_id: number;
     username: string;
+    expirationTime?:Date;
+    savedChecked?:number[];
 }
 
 export interface ReduxState {

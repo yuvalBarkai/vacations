@@ -38,7 +38,7 @@ function socketInit(listener) {
     })
 }
 
-function patchVacationFollowByIdAsync(id, isFollow) {
+function updateVacationFollowByIdAsync(id, isFollow) {
     let operator = "-";
     if (isFollow)
         operator = "+";
@@ -48,7 +48,26 @@ function patchVacationFollowByIdAsync(id, isFollow) {
     `);
 }
 
+function insertFollowAsync(userId, vacationId) {
+    return dal.executeQueryAsync(`INSERT INTO follows VALUES("${userId}", "${vacationId}")`);
+}
+
+function deleteFollowAsync(userId, vacationId) {
+    return dal.executeQueryAsync(`
+    DELETE FROM follows 
+    WHERE user_id = "${userId}" 
+    AND vacation_id = "${vacationId}"
+    `);
+}
+
+function selectFollowedVacationsByUserIdAsync(userId){
+    return dal.executeQueryAsync(`SELECT vacation_id FROM follows WHERE user_id = "${userId}" `);
+}
+
 module.exports = {
     socketInit,
-    patchVacationFollowByIdAsync
+    updateVacationFollowByIdAsync,
+    insertFollowAsync,
+    deleteFollowAsync,
+    selectFollowedVacationsByUserIdAsync
 }

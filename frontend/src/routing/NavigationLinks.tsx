@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import SocketService from "../services/SocketService";
 import { ReduxState } from "../types";
+import configuration from "../configuration.json"
 
 function NavigationLinks() {
     const userInfo = useSelector((state: ReduxState) => state.logged);
@@ -10,7 +11,10 @@ function NavigationLinks() {
     return (
         <>
             {userInfo.isLogged ?
-                <div>Hi {userInfo.userData.first_name} <button onClick={() => { SocketService.disconnect(dispatch) }}>Sign out</button></div>
+                <div>Hi {userInfo.userData.first_name} <button onClick={() => {
+                    SocketService.disconnect(dispatch); localStorage.removeItem(configuration.localStorageObjName)
+                }}>Sign out</button></div>
+
                 : <NavLink to="/login">Login</NavLink>}
             &nbsp;&nbsp;
             {userInfo.isAdmin &&

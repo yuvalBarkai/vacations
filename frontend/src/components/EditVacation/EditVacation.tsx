@@ -2,7 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom"
-import DateFormatter from "../../services/DateFormatter";
+import DateService from "../../services/DateService";
 import { AddVacationForm, ReduxState } from "../../types"
 
 function EditVacation() {
@@ -63,12 +63,12 @@ function EditVacation() {
             </div>
             <div>
                 <label>Start Date: </label>
-                <input type="date" defaultValue={vacationToEdit?.start_date && new DateFormatter(vacationToEdit.start_date).toYYYYMMDD()} {...register("start_date", { required: true })} />
+                <input type="date" defaultValue={vacationToEdit?.start_date && new DateService(vacationToEdit.start_date).toYYYYMMDD()} {...register("start_date", { required: true })} />
                 {errors.start_date?.type === "required" && <span className="error">Missing Start Date</span>}
             </div>
             <div>
                 <label>End Date: </label>
-                <input type="date" defaultValue={vacationToEdit?.end_date && new DateFormatter(vacationToEdit.end_date).toYYYYMMDD()} {...register("end_date", { required: true })} />
+                <input type="date" defaultValue={vacationToEdit?.end_date && new DateService(vacationToEdit.end_date).toYYYYMMDD()} {...register("end_date", { required: true })} />
                 {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
             </div>
             <div>

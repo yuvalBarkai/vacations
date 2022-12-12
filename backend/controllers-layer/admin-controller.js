@@ -7,6 +7,8 @@ const mediumLogic = require("../business-logic-layer/medium-logic");
 
 const fileUpload = require("express-fileupload");
 const path = require("path");
+const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 
 const router = express.Router();
 
@@ -19,6 +21,10 @@ router.get("/verify", (req, res) => {
 router.delete("/vacations/:id", async (req, res) => {
     try {
         const id = req.params.id;
+        const imageResult = await adminLogic.selectImageNameByIdAsync(id);
+        const absolutePath = path.join(__dirname, "..", "images", imageResult[0].image_location);
+        if (fs.existsSync(absolutePath))
+            fs.unlinkSync(absolutePath);
         const result = await adminLogic.deleteVacationByIdAsync(id);
         if (result.affectedRows < 1)
             res.status(400).send({ message: `Error: The id ${id} was not found and was not deleted` });
@@ -34,7 +40,7 @@ router.delete("/vacations/:id", async (req, res) => {
 });
 
 router.use([fileUpload(), verifyVactionValid]);
-// consider checking if this image name exists and changing the name via middleware
+
 
 router.post("/vacations", async (req, res) => {
     try {
@@ -44,6 +50,7 @@ router.post("/vacations", async (req, res) => {
             res.status(400).send({ message: "Error: please send a picture with the vacation" });
         else {
             body.followers = 0;
+            image.name = `${uuidv4()}.${image.name.split(".").pop()}`;
             body.image_location = image.name;
             const absolutePath = path.join(__dirname, "..", "images", image.name);
             await image.mv(absolutePath);
@@ -58,7 +65,7 @@ router.post("/vacations", async (req, res) => {
     }
 });
 
-router.use(express.json());
+// router.use(express.json());
 
 router.put("/vacations/:id", async (req, res) => {
     try {
@@ -68,6 +75,7 @@ router.put("/vacations/:id", async (req, res) => {
         if (!image)
             res.status(400).send({ message: "Error: please send a picture with the vacation" });
         else {
+            image.name = `${uuidv4()}.${image.name.split(".").pop()}`;
             body.image_location = image.name;
             const absolutePath = path.join(__dirname, "..", "images", image.name);
             await image.mv(absolutePath);

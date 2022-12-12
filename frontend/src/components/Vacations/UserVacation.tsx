@@ -16,10 +16,10 @@ function UserVacation(props: { vacation: VacationType }) {
       const checkedVac = [...checkedVacations];
       await axios.patch(
         `http://localhost:5000/medium/follow/${v.vacation_id}`,
-        { isFollow: isChecked },
+        { isFollow: isChecked, userId: userInfo.userData.user_id },
         { headers: { Authorization: `bearer ${userInfo.userData.token}` } }
       );
-      // consider declaring for the user that he follows this vacation
+
       if (isChecked) {
         dispatch(checked(v.vacation_id));
         checkedVac.push(v.vacation_id);
