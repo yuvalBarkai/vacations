@@ -1,17 +1,19 @@
-import axios from "axios";
+import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types"
 
 function AdminVacation(props: { vacation: VacationType }) {
     const v = props.vacation;
     const userInfo = useSelector((state: ReduxState) => state.logged);
+
     const deleteVacation = async () => {
         try {
-            await axios.delete(`http://localhost:5000/admin/vacations/${v.vacation_id}`,
-                { headers: { Authorization: `bearer ${userInfo.userData.token}` } });
+            await ServerRequests.deleteVacationAsync(v.vacation_id, userInfo.userData.token);
         } catch (err) {
-            console.log(err);
+            const error = err as AxiosError
+            alert(error.response?.data);
         }
     }
     return (

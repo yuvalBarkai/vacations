@@ -1,8 +1,9 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { useSelector } from "react-redux";
 import DateService from "../../services/DateService";
+import ServerRequests from "../../services/ServerRequests";
 import { AddVacationForm, ReduxState } from "../../types"
 
 function AddVacation() {
@@ -13,26 +14,16 @@ function AddVacation() {
 
     const submit = async (newVacation: AddVacationForm) => {
         try {
-            // add date validation like Joi
             setResultMsg("");
             setResultClass("");
             const dateError = new DateService(newVacation.start_date).validateStartEnd(newVacation.end_date);
-            if (dateError){
+            if (dateError) {
                 setResultMsg(dateError);
                 setResultClass("error");
             }
             else {
-                const formData = new FormData();
-                formData.append("vacation_description", newVacation.vacation_description);
-                formData.append("vacation_destination", newVacation.vacation_destination);
-                formData.append("image", newVacation.image[0]);
-                formData.append("start_date", newVacation.start_date);
-                formData.append("end_date", newVacation.end_date);
-                formData.append("price", String(newVacation.price));
-
-                const response = await axios.post(`http://localhost:5000/admin/vacations`, formData,
-                    { headers: { Authorization: `bearer ${userInfo.userData.token}` } });
-                setResultMsg(`The vacation was succesfully registered with the id ${response.data.insertId}`)
+                const response = await ServerRequests.postVacationAsync(newVacation, userInfo.userData.token);
+                setResultMsg(`The vacation was succesfully registered with the id ${response.insertId}`)
                 reset();
             }
         } catch (err) {

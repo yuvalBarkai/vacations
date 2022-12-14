@@ -1,4 +1,12 @@
 {
     "userSaveLocalStorageExpTime": 30,
-    "localStorageObjName":"savedUserInfo"
+    "localStorageObjName": "savedUserInfo",
+
+    "serverLoginAddr": "http://localhost:5000/auth/login",
+    "serverGetFollowsAddr": "http://localhost:5000/medium/followed",
+    "serverRegisterAddr":"http://localhost:5000/public/register",
+    "serverPostVacationAddr":"http://localhost:5000/admin/vacations",
+    "serverPutVacationAddr":"http://localhost:5000/admin/vacations",
+    "serverDeleteVacationAddr":"http://localhost:5000/admin/vacations",
+    "serverPatchFollowAddr":"http://localhost:5000/medium/follow"
 }

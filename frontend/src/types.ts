@@ -1,3 +1,16 @@
+export interface RegisterType {
+    first_name: string;
+    last_name: string;
+    username: string;
+    password: string;
+}
+
+
+export interface loginType {
+    username: string;
+    password: string;
+}
+
 export interface VacationType {
     vacation_id: number;
     vacation_description: string;
@@ -24,8 +37,8 @@ export interface UserType {
     token: string;
     user_id: number;
     username: string;
-    expirationTime?:Date;
-    savedChecked?:number[];
+    expirationTime?: Date;
+    savedChecked?: number[];
 }
 
 export interface ReduxState {

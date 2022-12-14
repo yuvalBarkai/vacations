@@ -1,28 +1,23 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ServerRequests from "../../services/ServerRequests";
+import { RegisterType } from "../../types";
 import "./Register.css"
 
-interface RegisterType {
-    first_name: string;
-    last_name: string;
-    username: string;
-    password: string;
-}
-
 function Register() {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterType>();
-    const [result, setResult] = useState("");
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterType>();
     const [serverErr, setServerErr] = useState<string[]>([]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const submit = async (registrationData: RegisterType) => {
         try {
-            setResult("");
             setServerErr([]);
-            await axios.post("http://localhost:5000/public/register", registrationData);
-            // swap that to automatic login and navigate("/home")
-            setResult(`You have been registered, feel free to login`);
-            reset();
+            await ServerRequests.registerAsync(registrationData, dispatch);
+            navigate("/home")
         }
         catch (err) {
             const error = err as AxiosError;
@@ -32,8 +27,8 @@ function Register() {
                     setServerErr(old => { old.push(e.message); return old });
             }
             else {
-                const errorMsg = (error.response?.data as { message: string })?.message;
-                setResult(errorMsg);
+                const errorMsg = (error.response?.data as { message: string }).message;
+                setServerErr(old => { old.push(errorMsg); return old });
             }
         }
     }
@@ -70,9 +65,6 @@ function Register() {
                 {errors.password?.type === "maxLength" && <span className="error">Must be under 41 characters</span>}
             </div>
             <button>Register</button>
-            <div>
-                {result}
-            </div>
             {serverErr.map(e => <div className="error">{e}</div>)}
         </form>
     )

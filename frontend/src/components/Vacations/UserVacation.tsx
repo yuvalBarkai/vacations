@@ -1,7 +1,6 @@
-import axios from "axios";
 import { SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checked, sortVacactions, unChecked } from "../../actions";
+import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types";
 
 function UserVacation(props: { vacation: VacationType }) {
@@ -13,21 +12,8 @@ function UserVacation(props: { vacation: VacationType }) {
   const follow = async (e: SyntheticEvent) => {
     try {
       const isChecked = (e.target as HTMLInputElement).checked;
-      const checkedVac = [...checkedVacations];
-      await axios.patch(
-        `http://localhost:5000/medium/follow/${v.vacation_id}`,
-        { isFollow: isChecked, userId: userInfo.userData.user_id },
-        { headers: { Authorization: `bearer ${userInfo.userData.token}` } }
-      );
-
-      if (isChecked) {
-        dispatch(checked(v.vacation_id));
-        checkedVac.push(v.vacation_id);
-      } else {
-        dispatch(unChecked(v.vacation_id));
-        checkedVac.splice(checkedVac.indexOf(v.vacation_id), 1);
-      }
-      dispatch(sortVacactions(checkedVac));
+      await ServerRequests.patchVacationFollowAsync(isChecked, v.vacation_id,
+        userInfo.userData.user_id, userInfo.userData.token, checkedVacations, dispatch);
     }
     catch (err) {
       console.log(err);

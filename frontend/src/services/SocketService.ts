@@ -21,5 +21,4 @@ class SocketService {
     }
 }
 
-// const currentSocket = new SocketService();
 export default SocketService

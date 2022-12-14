@@ -1,6 +1,11 @@
 
+interface CheckedActionType {
+    type: string;
+    vId: number;
+    data: number[];
+}
 
-function checkedReducer(state: number[] = [], action: { type: string, vId: number, data: number[] }) {
+function checkedReducer(state: number[] = [], action: CheckedActionType) {
     const list = [...state];
     switch (action.type) {
         case "CHECKED":

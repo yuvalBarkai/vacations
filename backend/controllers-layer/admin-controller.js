@@ -41,13 +41,12 @@ router.delete("/vacations/:id", async (req, res) => {
 
 router.use([fileUpload(), verifyVactionValid]);
 
-
 router.post("/vacations", async (req, res) => {
     try {
         const body = req.body;
         const image = req.files.image;
         if (!image)
-            res.status(400).send({ message: "Error: please send a picture with the vacation" });
+            res.status(400).send({ message: "Error: please send a image with the vacation" });
         else {
             body.followers = 0;
             image.name = `${uuidv4()}.${image.name.split(".").pop()}`;
@@ -65,12 +64,16 @@ router.post("/vacations", async (req, res) => {
     }
 });
 
-// router.use(express.json());
 
 router.put("/vacations/:id", async (req, res) => {
     try {
         const body = req.body;
         const id = req.params.id;
+        const imageResult = await adminLogic.selectImageNameByIdAsync(id);
+        const absolutePath = path.join(__dirname, "..", "images", imageResult[0].image_location);
+        if (fs.existsSync(absolutePath))
+            fs.unlinkSync(absolutePath);
+            
         const image = req.files.image;
         if (!image)
             res.status(400).send({ message: "Error: please send a picture with the vacation" });

@@ -1,51 +1,30 @@
-import axios, { AxiosError } from "axios";
+import "./Login.css";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-
-import { signin, updateChecked } from "../../actions";
-import SocketService from "../../services/SocketService";
-import { UserType } from "../../types";
-import "./Login.css";
-import configuration from "../../configuration.json";
-
-interface loginType {
-    username: string;
-    password: string;
-}
+import { loginType } from "../../types";
+import ServerRequests from "../../services/ServerRequests";
 
 function Login() {
-
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<loginType>();
     const [result, setResult] = useState("");
-    const navigate = useNavigate();
-
+    
     const submit = async (loginInfo: loginType) => {
         try {
             setResult("");
-            const response = await axios.post<UserType>("http://localhost:5000/auth/login", loginInfo);
-            const followedVac = await axios.get<{ vacation_id: number }[]>(`http://localhost:5000/medium/followed/${response.data.user_id}`,
-                { headers: { Authorization: `bearer ${response.data.token}` } });
-            dispatch(updateChecked(followedVac.data.map(f => f.vacation_id)));
-            dispatch(signin(response.data));
-            SocketService.connect(dispatch);
-            localStorage.removeItem(configuration.localStorageObjName);
-            const expTime = new Date();
-            expTime.setMinutes(expTime.getMinutes() + configuration.userSaveLocalStorageExpTime);
-            const savedInfo = { ...response.data }
-            savedInfo.expirationTime = expTime;
-            localStorage.setItem(configuration.localStorageObjName, JSON.stringify(savedInfo));
+            await ServerRequests.loginAsync(loginInfo, dispatch);
             navigate("/home");
         }
         catch (err) {
             const error = err as AxiosError;
-            const errorMsg = (error.response?.data as { message: string })?.message;
+            const errorMsg = (error.response?.data as { message: string }).message;
             setResult(errorMsg);
         }
     }
-
 
     return (
         <form onSubmit={handleSubmit(submit)}>

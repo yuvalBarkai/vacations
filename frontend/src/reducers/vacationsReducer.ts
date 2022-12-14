@@ -1,7 +1,12 @@
-
 import { VacationType } from "../types";
 
-const vacationsReducer = (state:VacationType[] = [], action: { type: string, data: VacationType[], checkedVac: number[] }) => {
+interface VacActionType {
+    type: string;
+    data: VacationType[];
+    checkedVac: number[];
+}
+
+const vacationsReducer = (state: VacationType[] = [], action: VacActionType) => {
     switch (action.type) {
         case "VACATIONS":
             return action.data;

@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom"
 import DateService from "../../services/DateService";
+import ServerRequests from "../../services/ServerRequests";
 import { AddVacationForm, ReduxState } from "../../types"
 
 function EditVacation() {
@@ -13,26 +13,16 @@ function EditVacation() {
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const navigate = useNavigate();
 
-
     const submit = async (newVacation: AddVacationForm) => {
         try {
-            const formData = new FormData();
-            // didnt work with a loop because typescript was complaining..
-            formData.append("vacation_description", newVacation.vacation_description);
-            formData.append("vacation_destination", newVacation.vacation_destination);
-            formData.append("image", newVacation.image[0]);
-            formData.append("start_date", newVacation.start_date);
-            formData.append("end_date", newVacation.end_date);
-            formData.append("price", String(newVacation.price));
-
-            await axios.put(`http://localhost:5000/admin/vacations/${vacationId}`, formData,
-                { headers: { Authorization: `bearer ${userInfo.userData.token}` } });
-            navigate("/home");
+            if (vacationId) {
+                await ServerRequests.editVacationAsync(vacationId, newVacation, userInfo.userData.token);
+                navigate("/home");
+            }
         } catch (error) {
             console.log(error);
         }
     }
-
 
     return (
         <form onSubmit={handleSubmit(submit)}>
@@ -70,9 +60,6 @@ function EditVacation() {
                 <label>End Date: </label>
                 <input type="date" defaultValue={vacationToEdit?.end_date && new DateService(vacationToEdit.end_date).toYYYYMMDD()} {...register("end_date", { required: true })} />
                 {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
-            </div>
-            <div>
-
             </div>
             <button>Submit</button>
         </form>
