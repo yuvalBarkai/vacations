@@ -21,11 +21,11 @@ class ServerRequests {
         return response.data.map(v => v.vacation_id);
     }
 
-    static patchVacationFollowAsync = async (isFollow: boolean, vacation_id: number, user_id: number,
+    static patchVacationFollowAsync = async (isFollow: boolean, vacation_id: number,
         token: string, checkedVacations: number[]): Promise<number[]> => {
         const checkedVac = [...checkedVacations];
         await axios.patch(
-            `${config.serverPatchFollowAddr}/${vacation_id}`, { isFollow, userId: user_id },
+            `${config.serverPatchFollowAddr}/${vacation_id}`, { isFollow },
             { headers: { Authorization: `bearer ${token}` } });
         if (isFollow) {
             checkedVac.push(vacation_id);

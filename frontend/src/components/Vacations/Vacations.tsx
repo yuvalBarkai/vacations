@@ -8,7 +8,7 @@ function Vacations() {
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const vacationList = useSelector((state: ReduxState) => state.vacations);
     const checkedVac = useSelector((state: ReduxState) => state.checkedVacations);
-    
+
     const sortVacations = (vacations: VacationType[]) => {
         return vacations.slice().sort((a, b) => { // sorting vacations by having the vacations in checkedVac first
             return (checkedVac.includes(a.vacation_id) && checkedVac.includes(b.vacation_id))

@@ -23,11 +23,3 @@ export const updateChecked = (checkedVac: number[]) => {
 export const clearChecked = () => {
     return { type: "CLEAR_CHECKED" }
 }
-
-export const checked = (vId: number) => {
-    return { type: "CHECKED", vId }
-}
-
-export const unChecked = (vId: number) => {
-    return { type: "UN_CHECKED", vId }
-}

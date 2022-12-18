@@ -23,7 +23,7 @@ function Login() {
             LocalUserSave.newLogin(success.data.token);
             dispatch(updateChecked(success.followedVac));
             dispatch(signin(success.data));
-            SocketService.connect(dispatch);
+            SocketService.connect(dispatch, success.data.token);
             navigate("/home");
         }
         catch (err) {

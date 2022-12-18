@@ -13,14 +13,12 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("useEffect");
         (async () => {
             const success = await LocalUserSave.autoLoginAsync();
-            console.log(success);
             if (success) {
                 dispatch(updateChecked(success.followedVac));
                 dispatch(signin(success.user));
-                SocketService.connect(dispatch);
+                SocketService.connect(dispatch, success.user.token);
             }
         })()
     }, [dispatch]);

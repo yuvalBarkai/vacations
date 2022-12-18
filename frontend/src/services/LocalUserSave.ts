@@ -2,13 +2,14 @@ import jwtDecode from "jwt-decode";
 import config from "../configuration.json"
 import { DecodedToken, UserType } from "../types";
 import ServerRequests from "./ServerRequests";
+import SocketService from "./SocketService";
 
 class LocalUserSave {
     static newLogin = (token: string) => {
         localStorage.removeItem(config.localStorageSaveName);
         localStorage.setItem(config.localStorageSaveName, token);
     }
-    
+
     static autoLoginAsync = async (): Promise<{ followedVac: number[], user: UserType } | void> => {
         const savedToken = localStorage.getItem(config.localStorageSaveName);
         if (savedToken) {
@@ -25,7 +26,8 @@ class LocalUserSave {
             }
         }
     }
-    static removeToken = () => {
+    static disconnect = () => {
+        SocketService.disconnect();
         localStorage.removeItem(config.localStorageSaveName);
     }
 }

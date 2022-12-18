@@ -5,7 +5,7 @@ import vacationsReducer from './vacationsReducer';
 
 const allReducers = combineReducers({
     logged: loggedReducer,
-    vacations:vacationsReducer,
+    vacations: vacationsReducer,
     checkedVacations: checkedReducer
 });
 

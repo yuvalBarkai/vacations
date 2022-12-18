@@ -33,7 +33,6 @@ class DateService {
         day.length < 2 && (day = `0${day}`);
         return `${year}-${month}-${day}`;
     }
-    // date.toLocalString("en-GB").substring(0,10)
 }
 
 export default DateService

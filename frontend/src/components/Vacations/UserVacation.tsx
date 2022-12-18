@@ -1,8 +1,11 @@
+import { AxiosError } from "axios";
 import { SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChecked } from "../../actions";
+import { clearVacations, signout, updateChecked } from "../../actions";
 import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types";
+import config from "../../configuration.json";
+import LocalUserSave from "../../services/LocalUserSave";
 
 function UserVacation(props: { vacation: VacationType }) {
   const v = props.vacation;
@@ -14,11 +17,19 @@ function UserVacation(props: { vacation: VacationType }) {
     try {
       const isChecked = (e.target as HTMLInputElement).checked;
       const checkedVac = await ServerRequests.patchVacationFollowAsync(isChecked, v.vacation_id,
-        userInfo.userData.user_id, userInfo.userData.token, checkedVacations);
+        userInfo.userData.token, checkedVacations);
       dispatch(updateChecked(checkedVac));
     }
     catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      if (error.response?.status === 403) {
+        alert(config.expiredMsg);
+        LocalUserSave.disconnect();
+        dispatch(signout());
+        dispatch(clearVacations());
+      }
+      else
+        console.log(error);
     }
   };
 

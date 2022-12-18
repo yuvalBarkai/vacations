@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import SocketService from "../services/SocketService";
 import { ReduxState } from "../types";
-import configuration from "../configuration.json"
+import config from "../configuration.json"
 import { clearVacations, signout } from "../actions";
 
 function NavigationLinks() {
@@ -14,7 +14,7 @@ function NavigationLinks() {
             {userInfo.isLogged ?
                 <div>Hi {userInfo.userData.first_name} <button onClick={() => {
                     SocketService.disconnect();
-                    localStorage.removeItem(configuration.localStorageSaveName);
+                    localStorage.removeItem(config.localStorageSaveName);
                     dispatch(clearVacations());
                     dispatch(signout());
                 }}>Sign out</button></div>

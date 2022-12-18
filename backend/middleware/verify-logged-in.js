@@ -1,6 +1,15 @@
 const jwt = require("jsonwebtoken");
 const config = require("../configuration.json");
 
+/**
+ * Verification middleware that validates the token
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @param {() => void} next keeps the pipeline going
+ * 
+ * Sends either status 401 (not logged in) or 403 (session is expired).
+ * Otherwise addes the user info to req and goes next()
+ */
 function verifyLoggedIn(req, res, next) {
     if (!req.headers.authorization)
         res.status(401).send({ message: "You are not logged-in" });

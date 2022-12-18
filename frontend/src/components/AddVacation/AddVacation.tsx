@@ -1,16 +1,20 @@
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DateService from "../../services/DateService";
 import ServerRequests from "../../services/ServerRequests";
 import { AddVacationForm, ReduxState } from "../../types"
+import config from "../../configuration.json";
+import { clearVacations, signout } from "../../actions";
+import LocalUserSave from "../../services/LocalUserSave";
 
 function AddVacation() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<AddVacationForm>();
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const [resultMsg, setResultMsg] = useState("");
     const [resultClass, setResultClass] = useState("");
+    const dispatch = useDispatch();
 
     const submit = async (newVacation: AddVacationForm) => {
         try {
@@ -27,11 +31,14 @@ function AddVacation() {
             }
         } catch (err) {
             const error = err as AxiosError;
-            setResultClass("error");
-            if (error.status === 403) {
-                setResultMsg("Your login session is expired, please reconnect");
+            if (error.response?.status === 403) {
+                setResultMsg(config.expiredMsg);
+                LocalUserSave.disconnect();
+                dispatch(signout());
+                dispatch(clearVacations());
             }
             else {
+                setResultClass("error");
                 const errorSent = error.response?.data as { message: string }[];
                 setResultMsg(errorSent[0].message);
             }

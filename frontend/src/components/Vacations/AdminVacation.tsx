@@ -1,19 +1,31 @@
 import { AxiosError } from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types"
+import config from "../../configuration.json";
+import { clearVacations, signout } from "../../actions";
+import LocalUserSave from "../../services/LocalUserSave";
 
 function AdminVacation(props: { vacation: VacationType }) {
     const v = props.vacation;
     const userInfo = useSelector((state: ReduxState) => state.logged);
+    const dispatch = useDispatch();
 
     const deleteVacation = async () => {
         try {
             await ServerRequests.deleteVacationAsync(v.vacation_id, userInfo.userData.token);
-        } catch (err) {
+        }
+        catch (err) {
             const error = err as AxiosError
-            alert(error.response?.data);
+            if (error.response?.status === 403) {
+                alert(config.expiredMsg);
+                LocalUserSave.disconnect();
+                dispatch(signout());
+                dispatch(clearVacations());
+            }
+            else
+                console.log(error.response?.data);
         }
     }
     return (

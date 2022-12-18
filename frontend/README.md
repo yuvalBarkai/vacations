@@ -1,16 +1,14 @@
 # Documentation
 
 due date: 20/12/2022
-## To do list:
-- Check the token bussiness.
-- Make good use of the config file.
-- Make the socket work with the token.
-- Build the FollowStats component.
-- Go over the comments in the code regarding additions.
-- Add not found component for not found route.
-- Consider removing the dispatch from the socketService.
 
-- Double check there arent any more features or bugs to add/repair. 
-- Document everything
-- fill upload folder
-- Design all of the Website (maybe use SCSS)
+## To do list:
+
+- Document Client
+- Design all of the Website (maybe use SCSS).
+- Check run time of all the components.
+- QA the website intensively.
+
+Design References:
+https://www.travelocity.com/lp/deals/all-inclusive
+https://www.expedia.com/Puerto-Rico-Island.d180021.Destination-Travel-Guides?rfrr=editorial.Puerto_Rico.click

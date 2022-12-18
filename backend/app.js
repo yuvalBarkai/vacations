@@ -20,7 +20,7 @@ const listener = app.listen(config.appPort, () => {
         console.log(`Error: Unknown Error`);
 });
 
-const { socketInit } = require("./business-logic-layer/medium-logic");
+const { socketInit } = require("./business-logic-layer/socket-logic");
 socketInit(listener);
 
 app.use("/public", publicController);

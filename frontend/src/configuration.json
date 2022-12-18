@@ -1,6 +1,8 @@
 {
     "userSaveLocalStorageExpTime": 30,
     "localStorageSaveName": "savedToken",
+    "expiredMsg":"Your session was expired, please reconnect",
+    "adminListUserId":[1],
     
     "serverLoginAddr": "http://localhost:5000/auth/login",
     "serverGetFollowsAddr": "http://localhost:5000/medium/followed",

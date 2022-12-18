@@ -1,15 +1,19 @@
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom"
 import DateService from "../../services/DateService";
 import ServerRequests from "../../services/ServerRequests";
-import { AddVacationForm, ReduxState } from "../../types"
+import { AddVacationForm, ReduxState } from "../../types";
+import config from "../../configuration.json";
+import { clearVacations, signout } from "../../actions";
+import LocalUserSave from "../../services/LocalUserSave";
 
 function EditVacation() {
     const { register, handleSubmit, formState: { errors } } = useForm<AddVacationForm>();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const [error, setErrorMsg] = useState("");
 
@@ -29,8 +33,11 @@ function EditVacation() {
             }
         } catch (err) {
             const error = err as AxiosError;
-            if (error.status === 403) {
-                setErrorMsg("Your login session is expired, please reconnect");
+            if (error.response?.status === 403) {
+                setErrorMsg(config.expiredMsg);
+                LocalUserSave.disconnect();
+                dispatch(signout());
+                dispatch(clearVacations());
             }
             else {
                 const errorSent = error.response?.data as { message: string }[]

@@ -1,9 +1,15 @@
 const Joi = require("joi");
-// https://www.youtube.com/watch?v=_svzevhv4vg
 
+/**
+ * A function that returns another function and allows us to create
+ * different validating functions
+ * 
+ * @param {Joi.object} schema 
+ * @returns {(payload)=> {errors, value}} A function that has a parameter
+ * that will have the schema used on him with the validate function (abortEarly: true)
+ */
 const validator = (schema) => (payload) =>
-    schema.validate(payload, { abortEarly: false });
-
+    schema.validate(payload, { abortEarly: true });
 
 const loginSchema = Joi.object({
     username: Joi.string().min(3).max(30).required(),
