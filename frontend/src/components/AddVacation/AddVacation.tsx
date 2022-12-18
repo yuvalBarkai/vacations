@@ -14,8 +14,6 @@ function AddVacation() {
 
     const submit = async (newVacation: AddVacationForm) => {
         try {
-            setResultMsg("");
-            setResultClass("");
             const dateError = new DateService(newVacation.start_date).validateStartEnd(newVacation.end_date);
             if (dateError) {
                 setResultMsg(dateError);
@@ -23,14 +21,21 @@ function AddVacation() {
             }
             else {
                 const response = await ServerRequests.postVacationAsync(newVacation, userInfo.userData.token);
+                setResultClass("");
                 setResultMsg(`The vacation was succesfully registered with the id ${response.insertId}`)
                 reset();
             }
         } catch (err) {
             const error = err as AxiosError;
-            const errorSent = error.response?.data as { message: string }[]
-            setResultMsg(errorSent[0].message);
             setResultClass("error");
+            if (error.status === 403) {
+                setResultMsg("Your login session is expired, please reconnect");
+            }
+            else {
+                const errorSent = error.response?.data as { message: string }[];
+                setResultMsg(errorSent[0].message);
+            }
+
         }
     }
 
@@ -59,6 +64,7 @@ function AddVacation() {
             <div>
                 <label>Price: </label>
                 <input type="number" {...register("price", { required: true, min: 0 })} />
+                {errors.price?.type === "required" && <span className="error">Missing Price</span>}
                 {errors.price?.type === "min" && <span className="error">Must be positive</span>}
             </div>
             <div>

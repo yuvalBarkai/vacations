@@ -5,8 +5,7 @@ export interface RegisterType {
     password: string;
 }
 
-
-export interface loginType {
+export interface LoginType {
     username: string;
     password: string;
 }
@@ -37,12 +36,23 @@ export interface UserType {
     token: string;
     user_id: number;
     username: string;
-    expirationTime?: Date;
-    savedChecked?: number[];
 }
 
 export interface ReduxState {
     logged: { isLogged: boolean, isAdmin: boolean, userData: UserType };
     vacations: VacationType[];
     checkedVacations: number[];
+}
+
+export interface TokenUser {
+    user_id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface DecodedToken {
+    exp: number;
+    iat: number;
+    user: TokenUser;
 }

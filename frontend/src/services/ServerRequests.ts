@@ -1,25 +1,18 @@
 import axios, { AxiosResponse } from "axios"
-import { AddVacationForm, loginType, RegisterType } from "../types"
+import { AddVacationForm, LoginType, RegisterType } from "../types"
 import config from "../configuration.json";
-import { Dispatch } from "@reduxjs/toolkit";
-import { signin, sortVacactions, updateChecked } from "../actions";
-import SocketService from "./SocketService";
-import LocalUserSave from "./LocalUserSave";
 
 class ServerRequests {
-    static registerAsync = async (registrationData: RegisterType, dispatch: Dispatch) => {
+    static registerAsync = async (registrationData: RegisterType) => {
         await axios.post(config.serverRegisterAddr, registrationData);
         const loginInfo = { username: registrationData.username, password: registrationData.password };
-        ServerRequests.loginAsync(loginInfo, dispatch);
+        return ServerRequests.loginAsync(loginInfo);
     }
 
-    static loginAsync = async (loginInfo: loginType, dispatch: Dispatch) => {
+    static loginAsync = async (loginInfo: LoginType) => {
         const { data } = await axios.post(config.serverLoginAddr, loginInfo);
         const followedVac = await ServerRequests.getVacFollowsAsync(data.user_id, data.token);
-        dispatch(updateChecked(followedVac));
-        dispatch(signin(data));
-        SocketService.connect(dispatch);
-        LocalUserSave.newLogin(data);
+        return { data, followedVac };
     }
 
     static getVacFollowsAsync = async (user_id: number, token: string): Promise<number[]> => {
@@ -29,7 +22,7 @@ class ServerRequests {
     }
 
     static patchVacationFollowAsync = async (isFollow: boolean, vacation_id: number, user_id: number,
-        token: string, checkedVacations: number[], dispatch: Dispatch) => {
+        token: string, checkedVacations: number[]): Promise<number[]> => {
         const checkedVac = [...checkedVacations];
         await axios.patch(
             `${config.serverPatchFollowAddr}/${vacation_id}`, { isFollow, userId: user_id },
@@ -39,8 +32,7 @@ class ServerRequests {
         } else {
             checkedVac.splice(checkedVac.indexOf(vacation_id), 1);
         }
-        dispatch(updateChecked(checkedVac));
-        dispatch(sortVacactions(checkedVac));
+        return checkedVac;
     }
 
     static deleteVacationAsync = async (vacation_id: number, token: string): Promise<AxiosResponse> => {

@@ -1,5 +1,6 @@
 import { SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { updateChecked } from "../../actions";
 import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types";
 
@@ -12,14 +13,15 @@ function UserVacation(props: { vacation: VacationType }) {
   const follow = async (e: SyntheticEvent) => {
     try {
       const isChecked = (e.target as HTMLInputElement).checked;
-      await ServerRequests.patchVacationFollowAsync(isChecked, v.vacation_id,
-        userInfo.userData.user_id, userInfo.userData.token, checkedVacations, dispatch);
+      const checkedVac = await ServerRequests.patchVacationFollowAsync(isChecked, v.vacation_id,
+        userInfo.userData.user_id, userInfo.userData.token, checkedVacations);
+      dispatch(updateChecked(checkedVac));
     }
     catch (err) {
       console.log(err);
     }
   };
-  // check the checked, The sort has bugs
+
   return (
     <div>
       <h2>{v.vacation_destination}</h2>

@@ -3,7 +3,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signin, updateChecked } from "../../actions";
+import LocalUserSave from "../../services/LocalUserSave";
 import ServerRequests from "../../services/ServerRequests";
+import SocketService from "../../services/SocketService";
 import { RegisterType } from "../../types";
 import "./Register.css"
 
@@ -16,7 +19,11 @@ function Register() {
     const submit = async (registrationData: RegisterType) => {
         try {
             setServerErr([]);
-            await ServerRequests.registerAsync(registrationData, dispatch);
+            const success = await ServerRequests.registerAsync(registrationData);
+            LocalUserSave.newLogin(success.data.token);
+            dispatch(updateChecked(success.followedVac));
+            dispatch(signin(success.data));
+            SocketService.connect(dispatch);
             navigate("/home")
         }
         catch (err) {

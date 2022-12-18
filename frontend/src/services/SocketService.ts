@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { clearVacations, signout, updateVacatios } from "../actions";
+import { updateVacatios } from "../actions";
 import { VacationType } from "../types";
 
 class SocketService {
@@ -14,10 +14,8 @@ class SocketService {
             console.log(error);
         });
     }
-    static disconnect(dispatch:(action: { type: string }) => void){
+    static disconnect() {
         SocketService.socket?.disconnect();
-        dispatch(clearVacations());
-        dispatch(signout());
     }
 }
 

@@ -4,25 +4,32 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { loginType } from "../../types";
+import { LoginType } from "../../types";
 import ServerRequests from "../../services/ServerRequests";
+import SocketService from "../../services/SocketService";
+import { signin, updateChecked } from "../../actions";
+import LocalUserSave from "../../services/LocalUserSave";
 
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm<loginType>();
-    const [result, setResult] = useState("");
-    
-    const submit = async (loginInfo: loginType) => {
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginType>();
+    const [error, setError] = useState("");
+
+    const submit = async (loginInfo: LoginType) => {
         try {
-            setResult("");
-            await ServerRequests.loginAsync(loginInfo, dispatch);
+            setError("");
+            const success = await ServerRequests.loginAsync(loginInfo);
+            LocalUserSave.newLogin(success.data.token);
+            dispatch(updateChecked(success.followedVac));
+            dispatch(signin(success.data));
+            SocketService.connect(dispatch);
             navigate("/home");
         }
         catch (err) {
             const error = err as AxiosError;
             const errorMsg = (error.response?.data as { message: string }).message;
-            setResult(errorMsg);
+            setError(errorMsg);
         }
     }
 
@@ -44,8 +51,8 @@ function Login() {
                 {errors.password?.type === "minLength" && <span className="error"> Must be over 2 characters </span>}
             </div>
             <button>Login</button>
-            <div>
-                {result}
+            <div className="error">
+                {error}
             </div>
             <div>
                 <NavLink to="/register">Register</NavLink>
