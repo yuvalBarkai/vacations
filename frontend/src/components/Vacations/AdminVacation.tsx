@@ -11,7 +11,11 @@ function AdminVacation(props: { vacation: VacationType }) {
     const v = props.vacation;
     const userInfo = useSelector((state: ReduxState) => state.logged);
     const dispatch = useDispatch();
-
+    /**
+     * - Activates ServerRequests.deleteVacationAsync with the vacation id and the token
+     * - if it fails, checks the error status and either disconnect the user because it
+     * got 403 (Unautorized) or console.logs the error for other error.
+     */
     const deleteVacation = async () => {
         try {
             await ServerRequests.deleteVacationAsync(v.vacation_id, userInfo.userData.token);

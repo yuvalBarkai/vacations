@@ -44,6 +44,12 @@ export interface ReduxState {
     checkedVacations: number[];
 }
 
+export interface DecodedToken {
+    exp: number;
+    iat: number;
+    user: TokenUser;
+}
+
 export interface TokenUser {
     user_id: number;
     username: string;
@@ -51,8 +57,13 @@ export interface TokenUser {
     last_name: string;
 }
 
-export interface DecodedToken {
-    exp: number;
-    iat: number;
-    user: TokenUser;
+export interface mySqlResultObj {
+    affectedRows: number;
+    changedRows: number;
+    fieldCount: number;
+    insertId: number;
+    message: string;
+    protocol41: boolean;
+    serverStatus: number;
+    warningCount: number;
 }

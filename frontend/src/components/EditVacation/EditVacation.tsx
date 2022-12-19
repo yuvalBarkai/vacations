@@ -20,7 +20,14 @@ function EditVacation() {
     const vacationId = useParams().id;
     const vacations = useSelector((state: ReduxState) => state.vacations);
     const vacationToEdit = vacations.find(v => String(v.vacation_id) === vacationId);
-
+    /**
+     * - validates the start_date and end_date, shows the error if there are any.
+     * - If the dates are valid, sends a edit vacation request to the server.
+     * - If it succeeds, navigates "/home".
+     * - If it does not succeed, checks the error status and either disconnect the user because it
+     * got 403 (Unautorized) or shows the error. 
+     * @param {AddVacationForm} newVacation 
+     */
     const submit = async (newVacation: AddVacationForm) => {
         try {
             const dateError = new DateService(newVacation.start_date).validateStartEnd(newVacation.end_date);

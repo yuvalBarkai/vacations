@@ -12,7 +12,14 @@ function UserVacation(props: { vacation: VacationType }) {
   const dispatch = useDispatch();
   const checkedVacations = useSelector((state: ReduxState) => state.checkedVacations);
   const userInfo = useSelector((state: ReduxState) => state.logged);
-
+  /**
+   * - Checks if the checkbox is checked or unchecked.
+   * - sends the information to the ServerRequests.patchVacationFollowAsync function
+   * - If it succeded updates the checkedVac array in Redux.
+   * If it does not succeed, checks the error status and either disconnect the user because it
+   * got 403 (Unautorized) or console.logs the error for other error.
+   * @param {SyntheticEvent} e 
+   */
   const follow = async (e: SyntheticEvent) => {
     try {
       const isChecked = (e.target as HTMLInputElement).checked;

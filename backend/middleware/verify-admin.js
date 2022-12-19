@@ -10,8 +10,9 @@ const config = require("../configuration.json");
  * Otherwise goes next().
  */
 function verifyAdmin(req, res, next) {
-    if (req.user && config.adminListUserId.includes(req.user.user_id))
+    if (req.user && config.adminListUserId.includes(req.user.user_id)){
         next();
+    }
     else
         res.status(401).send({ message: "Unauthorized (admin)" });
 }

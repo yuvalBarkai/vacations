@@ -15,7 +15,8 @@ function App() {
     useEffect(() => {
         (async () => {
             const success = await LocalUserSave.autoLoginAsync();
-            if (success) {
+            
+            if (success) { // connects the user automaticly if success has values
                 dispatch(updateChecked(success.followedVac));
                 dispatch(signin(success.user));
                 SocketService.connect(dispatch, success.user.token);

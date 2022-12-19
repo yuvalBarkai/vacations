@@ -15,7 +15,15 @@ function Register() {
     const [serverErr, setServerErr] = useState<string[]>([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    /**
+     * - Tries to Register the user.
+     * - If it succeeds, saves the token in the localStorage,
+     * dispatchs the information to Redux, connects to the socket
+     * and navigates home.
+     * - If it does not succeed checks the error status and shows an 
+     * array of errors 
+     * @param {RegisterType} registrationData 
+     */
     const submit = async (registrationData: RegisterType) => {
         try {
             setServerErr([]);

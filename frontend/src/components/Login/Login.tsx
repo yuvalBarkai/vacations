@@ -15,7 +15,14 @@ function Login() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginType>();
     const [error, setError] = useState("");
-
+    /**
+     * - Tries to login the user.
+     * - If it is succeeded, saves the token in the localStorage,
+     * dispatchs the information to Redux, connects to the socket
+     * and navigates home.
+     * - If it is not succeeded, shows the error. 
+     * @param {LoginType} loginInfo 
+     */
     const submit = async (loginInfo: LoginType) => {
         try {
             setError("");
