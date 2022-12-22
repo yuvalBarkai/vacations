@@ -6,6 +6,7 @@ import { ReduxState, VacationType } from "../../types"
 import config from "../../configuration.json";
 import { clearVacations, signout } from "../../actions";
 import LocalUserSave from "../../services/LocalUserSave";
+import { Card, CloseButton, Col, ListGroup } from "react-bootstrap";
 
 function AdminVacation(props: { vacation: VacationType }) {
     const v = props.vacation;
@@ -33,14 +34,25 @@ function AdminVacation(props: { vacation: VacationType }) {
         }
     }
     return (
-        <div>
-            <NavLink to={`/editVacation/${v.vacation_id}`}>Edit</NavLink>
-            <button onClick={deleteVacation}>DELETE</button>
-            <h2>{v.vacation_destination}</h2>
-            <div>{v.vacation_description}</div>
-            <img className="image" src={`http://localhost:5000/public/images/${v.image_location}`} alt="Server Error" />
-            <div>Follower Number: {v.followers}</div>
-        </div>
+        <Col sm={12} lg={4} md={6}>
+            <Card className="userCard">
+                <Card.Img variant="top" src={`http://localhost:5000/public/images/${v.image_location}`} className="image"/>
+                <NavLink to={`/editVacation/${v.vacation_id}`} className="editBtn">🖉</NavLink>
+                <CloseButton onClick={deleteVacation} className="deleteBtn" />
+                <Card.Body>
+                    <Card.Title className="destination">{v.vacation_destination}</Card.Title>
+                    <Card.Text>
+                        {v.vacation_description}
+                    </Card.Text>
+                    <Card.Text className="price">{v.price}$</Card.Text>
+                </Card.Body>
+                <ListGroup className="list-group-flush">
+                    <ListGroup.Item>Start Date: {new Date(v.start_date).toLocaleString("en-GB").substring(0, 10)}</ListGroup.Item>
+                    <ListGroup.Item>End Date: {new Date(v.end_date).toLocaleString("en-GB").substring(0, 10)}</ListGroup.Item>
+                    <ListGroup.Item>{v.followers} Users are following this vacation</ListGroup.Item>
+                </ListGroup>
+            </Card>
+        </Col>
     )
 }
 

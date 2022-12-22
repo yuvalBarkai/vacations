@@ -4,7 +4,7 @@
     "jwtEncriptionKey": "bodec him ze hoved, mekave she ken",
     "tokenExpirationTime": "30 minutes",
 
-    "notFoundImgName":"notFoundTemplate_ae3cf3bc-f6e2-471e-95c0-009d3d1d710e.png",
+    "notFoundImgName":"notFoundTemplate.png",
     "adminListUserId":[1],
 
     "dbHost": "localhost",

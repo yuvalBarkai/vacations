@@ -16,17 +16,5 @@ for an admin that can delete, edit, add vacations.
   (around 4n log n) which made me think of another way but I didnt implement it
   because I wasnt sure it was better.  
   (Having 2 arrays, one of followed vacations and one of notFollowedVacations)
-
-## To do list:
-
-- Design all of the Website (maybe use SCSS).  
-  @use, @forward, as - https://www.youtube.com/watch?v=CR-a8upNjJ0
-
-- Make it responsive
-- Look at the Requirements
-- Check run time of all the components.
-- QA the website intensively.
-
-Design References:
-https://www.travelocity.com/lp/deals/all-inclusive
-https://www.expedia.com/Puerto-Rico-Island.d180021.Destination-Travel-Guides?rfrr=editorial.Puerto_Rico.click
+- I could have designed more but I focused more on the technical part because I prefer it
+  over designing although I do know that the design is a crucial part of the website.

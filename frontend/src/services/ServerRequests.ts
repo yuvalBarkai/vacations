@@ -105,7 +105,7 @@ class ServerRequests {
      * @param {AddVacationForm} newVacation 
      * @returns A FormData with the information from the parameter newVacation. 
      */
-    static vacationToFormData = (newVacation: AddVacationForm): FormData => {
+    private static vacationToFormData = (newVacation: AddVacationForm): FormData => {
         const formData = new FormData();
         formData.append("vacation_description", newVacation.vacation_description);
         formData.append("vacation_destination", newVacation.vacation_destination);

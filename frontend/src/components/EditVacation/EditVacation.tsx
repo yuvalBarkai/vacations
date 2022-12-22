@@ -1,3 +1,4 @@
+import "./EditVacation.scss";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,7 @@ import { AddVacationForm, ReduxState } from "../../types";
 import config from "../../configuration.json";
 import { clearVacations, signout } from "../../actions";
 import LocalUserSave from "../../services/LocalUserSave";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 function EditVacation() {
     const { register, handleSubmit, formState: { errors } } = useForm<AddVacationForm>();
@@ -50,53 +52,58 @@ function EditVacation() {
                 const errorSent = error.response?.data as { message: string }[]
                 setErrorMsg(errorSent[0].message);
             }
-
         }
     }
 
     return (
-        <form onSubmit={handleSubmit(submit)}>
-            <h2>Edit Vacation No. {vacationId}</h2>
-            <div>
-                <label>Description: </label>
-                <textarea cols={30} rows={4} defaultValue={vacationToEdit?.vacation_description} {...register("vacation_description", { required: true, minLength: 20, maxLength: 300 })}></textarea>
-                {errors.vacation_description?.type === "required" && <span className="error">Missing Description</span>}
-                {errors.vacation_description?.type === "minLength" && <span className="error">Must have 20 characters or more</span>}
-                {errors.vacation_description?.type === "maxLength" && <span className="error">Must have 300 characters or less</span>}
-            </div>
-            <div>
-                <label>Vacation's destination: </label>
-                <input type="text" defaultValue={vacationToEdit?.vacation_destination} {...register("vacation_destination", { required: true, minLength: 2, maxLength: 40 })} />
+        <Form onSubmit={handleSubmit(submit)} className="editVacationForm">
+            <Form.Group className="mb-3">
+                <Form.Label>Destination</Form.Label>
+                <Form.Control className="input destination" defaultValue={vacationToEdit?.vacation_destination} type="text" placeholder="Destination" {...register("vacation_destination", { required: true, minLength: 2, maxLength: 40 })} />
                 {errors.vacation_destination?.type === "required" && <span className="error">Missing Destination</span>}
                 {errors.vacation_destination?.type === "minLength" && <span className="error">Must have 2 characters or more</span>}
                 {errors.vacation_destination?.type === "maxLength" && <span className="error">Must have 40 characters or less</span>}
-            </div>
-            <div>
-                <label>Image: </label>
-                <input type="file" {...register("image", { required: true })} />
+            </Form.Group>
+            <FloatingLabel controlId="floatingTextarea" label="Vacation Description" className="input description">
+                <Form.Control
+                    as="textarea"
+                    style={{ height: '125px', fontSize: "25px" }}
+                    {...register("vacation_description", { required: true, minLength: 20, maxLength: 300 })}
+                    defaultValue={vacationToEdit?.vacation_description}
+                />
+            </FloatingLabel>
+            {errors.vacation_description?.type === "required" && <span className="error">Missing Description</span>}
+            {errors.vacation_description?.type === "minLength" && <span className="error">Must have 20 characters or more</span>}
+            {errors.vacation_description?.type === "maxLength" && <span className="error">Must have 300 characters or less</span>}
+            <Form.Group className="mb-3">
+                <Form.Label>Image</Form.Label>
+                <Form.Control className="input image" type="file"  {...register("image", { required: true })} />
                 {errors.image?.type === "required" && <span className="error">Missing Image</span>}
-            </div>
-            <div>
-                <label>Price: </label>
-                <input type="number" defaultValue={vacationToEdit?.price} {...register("price", { required: true, min: 0 })} />
-                {errors.price?.type === "required" && <span className="error">Missing name</span>}
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Price</Form.Label>
+                <Form.Control className="input price" defaultValue={vacationToEdit?.price} type="number" {...register("price", { required: true, min: 0 })} />
+                {errors.price?.type === "required" && <span className="error">Missing Price</span>}
                 {errors.price?.type === "min" && <span className="error">Must be positive</span>}
-            </div>
-            <div>
-                <label>Start Date: </label>
-                <input type="date" defaultValue={vacationToEdit?.start_date && new DateService(vacationToEdit.start_date).toYYYYMMDD()} {...register("start_date", { required: true })} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Start Date</Form.Label>
+                <Form.Control className="input start_date" type="date" defaultValue={vacationToEdit?.start_date && new DateService(vacationToEdit?.start_date).toYYYYMMDD()} {...register("start_date", { required: true })} />
                 {errors.start_date?.type === "required" && <span className="error">Missing Start Date</span>}
-            </div>
-            <div>
-                <label>End Date: </label>
-                <input type="date" defaultValue={vacationToEdit?.end_date && new DateService(vacationToEdit.end_date).toYYYYMMDD()} {...register("end_date", { required: true })} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>End Date</Form.Label>
+                <Form.Control className="input end_date" type="date" defaultValue={vacationToEdit?.end_date && new DateService(vacationToEdit?.end_date).toYYYYMMDD()} {...register("end_date", { required: true })} />
                 {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
-            </div>
+            </Form.Group>
             <div className="error">
                 {error}
             </div>
-            <button>Submit</button>
-        </form>
+            <Button variant="primary" type="submit" size="lg">
+                Submit
+            </Button>
+        </Form>
+
     )
 }
 

@@ -1,0 +1,12 @@
+@use "../../abstracts.scss" as a;
+
+.loginForm {
+    font-size: a.$formFontSize ;
+    font-weight: 600;
+    .input {
+        font-size: a.$formFontSize - 5;
+        width: 300px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}

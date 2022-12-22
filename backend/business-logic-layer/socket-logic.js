@@ -32,7 +32,7 @@ function socketInit(listener) {
          * If there are any users, they are emited with the vacations table from the db
          * or an error if something went wrong with the mySQL query
          */
-        const allUsersVacationUpdate = async () => {
+        const allUsersVacationsUpdate = async () => {
             if (socketsManager.engine.clientsCount > 0) {
                 try {
                     const vacations = await dal.executeQueryAsync(`SELECT * FROM vacations`);
@@ -44,7 +44,7 @@ function socketInit(listener) {
                 }
             }
         };
-        module.exports.allUsersVacationUpdate = allUsersVacationUpdate;
+        module.exports.allUsersVacationsUpdate = allUsersVacationsUpdate;
 
         socketsManager.sockets.on("connection", (socket) => {
             (async () => {

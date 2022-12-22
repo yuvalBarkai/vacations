@@ -1,0 +1,21 @@
+.app {
+  text-align: center;
+}
+
+.active {
+  font-weight: 900;
+}
+
+main {
+  min-height: 500px !important;
+}
+
+.error {
+  color: red;
+}
+
+.footer {
+  background-color: rgba(128, 128, 128, 0.175);
+  clear: both;
+  position: relative;
+}

@@ -21,14 +21,15 @@ router.post("/register", async (req, res) => {
             return res.status(400).send(error.details)
 
         const result = await publicLogic.insertUserAsync(newUser);
-        res.send(result);
+        res.status(201).send(result);
 
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY')
             res.status(409).send({ message: "That username is taken" });
-        else
+        else {
             res.status(500).send({ message: "Error: Server Error" });
-        console.log(err);
+            console.log(err);
+        }
     }
 });
 

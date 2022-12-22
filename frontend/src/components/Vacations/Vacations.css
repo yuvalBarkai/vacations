@@ -1,8 +1,0 @@
-.vacationList{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.image {
-    width: 200px;
-}

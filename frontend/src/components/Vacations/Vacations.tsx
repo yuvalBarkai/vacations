@@ -1,8 +1,12 @@
+import "./Vacations.scss";
+import Container from 'react-bootstrap/Container';
 import { useSelector } from "react-redux"
 import { ReduxState, VacationType } from "../../types";
 import AdminVacation from "./AdminVacation";
 import UserVacation from "./UserVacation";
-import "./Vacations.css";
+import { Row } from "react-bootstrap";
+import config from "../../configuration.json";
+
 
 function Vacations() {
     const userInfo = useSelector((state: ReduxState) => state.logged);
@@ -30,17 +34,26 @@ function Vacations() {
             {userInfo.isLogged
                 ?
                 vacationList.length === 0 ?
-                    <h2>Seems like there arent any vacations at the moment, come back later</h2>
+                    <h2>Seems like there arent any vacations at the moment, <br />
+                        feel free to come back later</h2>
                     :
-                    <div className="vacationList">
-                        {userInfo.isAdmin
-                            ?
-                            sortVacations(vacationList).map(v => <AdminVacation vacation={v} key={v.vacation_id} />)
-                            :
-                            sortVacations(vacationList).map(v => <UserVacation vacation={v} key={v.vacation_id} />)}
-                    </div>
+                    <Container fluid className="vacationsContainer">
+                        <Row>
+                            {userInfo.isAdmin
+                                ?
+                                sortVacations(vacationList).map(v => <AdminVacation vacation={v} key={v.vacation_id} />)
+                                :
+                                sortVacations(vacationList).map(v => <UserVacation vacation={v} key={v.vacation_id} />)}
+                        </Row>
+                    </Container>
                 :
-                <h2>Log in and see our amazing vacations</h2>
+                <div>
+                    {/* <img src={require("../../assets/homeImg.jpg")} alt="Not found" className="homeImg" /> */}
+                    <div className="homeImg">
+                        <div className="homeMsg">Welcome to {config.siteName} feel free to login <br />
+                            and see our amazing vacations</div>
+                    </div>
+                </div>
             }
         </div>
     )

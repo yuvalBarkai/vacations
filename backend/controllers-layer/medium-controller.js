@@ -49,7 +49,7 @@ router.patch("/follow/:vacationId", async (req, res) => {
                 isFollow ? await mediumLogic.insertFollowAsync(userId, vacationId)
                     : await mediumLogic.deleteFollowAsync(userId, vacationId);
                 res.send(result);
-                socketLogic.allUsersVacationUpdate();
+                socketLogic.allUsersVacationsUpdate();
             }
         }
     } catch (err) {

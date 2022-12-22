@@ -6,6 +6,7 @@ import ServerRequests from "../../services/ServerRequests";
 import { ReduxState, VacationType } from "../../types";
 import config from "../../configuration.json";
 import LocalUserSave from "../../services/LocalUserSave";
+import { Card, Col, ListGroup } from "react-bootstrap";
 
 function UserVacation(props: { vacation: VacationType }) {
   const v = props.vacation;
@@ -41,13 +42,27 @@ function UserVacation(props: { vacation: VacationType }) {
   };
 
   return (
-    <div>
-      <h2>{v.vacation_destination}</h2>
-      <input type="checkbox" onChange={follow} checked={checkedVacations.includes(v.vacation_id)} />
-      <div>{v.vacation_description}</div>
-      <img className="image" src={`http://localhost:5000/public/images/${v.image_location}`} alt="Server Error" />
-      <div>Follower Number: {v.followers}</div>
-    </div>
+    <Col lg={4} md={6}>
+      <Card className="userCard">
+        <Card.Img src={`http://localhost:5000/public/images/${v.image_location}`} className="image" />
+        <div className="follow">
+          <label htmlFor="">Follow: </label>
+          <input type="checkbox" onChange={follow} checked={checkedVacations.includes(v.vacation_id)} />
+        </div>
+        <Card.Body>
+          <Card.Title className="destination">{v.vacation_destination}</Card.Title>
+          <Card.Text>
+            {v.vacation_description}
+          </Card.Text>
+        </Card.Body>
+        <Card.Text className="price">{v.price}$</Card.Text>
+        <ListGroup className="list-group-flush">
+          <ListGroup.Item>Start Date: {new Date(v.start_date).toLocaleString("en-GB").substring(0, 10)}</ListGroup.Item>
+          <ListGroup.Item>End Date: {new Date(v.end_date).toLocaleString("en-GB").substring(0, 10)}</ListGroup.Item>
+          <ListGroup.Item>{v.followers} Users are following this vacation</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    </Col>
   );
 }
 

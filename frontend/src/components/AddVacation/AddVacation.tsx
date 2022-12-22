@@ -1,3 +1,4 @@
+import "./AddVacation.scss";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
@@ -8,6 +9,7 @@ import { AddVacationForm, ReduxState } from "../../types"
 import config from "../../configuration.json";
 import { clearVacations, signout } from "../../actions";
 import LocalUserSave from "../../services/LocalUserSave";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 function AddVacation() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<AddVacationForm>();
@@ -54,48 +56,52 @@ function AddVacation() {
     }
 
     return (
-        <form onSubmit={handleSubmit(submit)}>
-            <h2>Add Vacation</h2>
-            <div>
-                <label>Description: </label>
-                <textarea cols={30} rows={4} {...register("vacation_description", { required: true, minLength: 20, maxLength: 300 })}></textarea>
+            <Form onSubmit={handleSubmit(submit)} className="addVacationForm">
+                <Form.Group className="mb-3">
+                    <Form.Label>Destination</Form.Label>
+                    <Form.Control className="input destination" type="text" placeholder="Destination" {...register("vacation_destination", { required: true, minLength: 2, maxLength: 40 })} />
+                    {errors.vacation_destination?.type === "required" && <span className="error">Missing Destination</span>}
+                    {errors.vacation_destination?.type === "minLength" && <span className="error">Must have 2 characters or more</span>}
+                    {errors.vacation_destination?.type === "maxLength" && <span className="error">Must have 40 characters or less</span>}
+                </Form.Group>
+                <FloatingLabel controlId="floatingTextarea" label="Vacation Description" className="input description">
+                    <Form.Control
+                        as="textarea"
+                        style={{ height: '125px', fontSize:"25px" }}
+                        {...register("vacation_description", { required: true, minLength: 20, maxLength: 300 })}
+                    />
+                </FloatingLabel>
                 {errors.vacation_description?.type === "required" && <span className="error">Missing Description</span>}
                 {errors.vacation_description?.type === "minLength" && <span className="error">Must have 20 characters or more</span>}
                 {errors.vacation_description?.type === "maxLength" && <span className="error">Must have 300 characters or less</span>}
-            </div>
-            <div>
-                <label>Vacation's destination: </label>
-                <input type="text" {...register("vacation_destination", { required: true, minLength: 2, maxLength: 40 })} />
-                {errors.vacation_destination?.type === "required" && <span className="error">Missing Destination</span>}
-                {errors.vacation_destination?.type === "minLength" && <span className="error">Must have 2 characters or more</span>}
-                {errors.vacation_destination?.type === "maxLength" && <span className="error">Must have 40 characters or less</span>}
-            </div>
-            <div>
-                <label>Image: </label>
-                <input type="file" {...register("image", { required: true })} />
-                {errors.image?.type === "required" && <span className="error">Missing Image</span>}
-            </div>
-            <div>
-                <label>Price: </label>
-                <input type="number" {...register("price", { required: true, min: 0 })} />
-                {errors.price?.type === "required" && <span className="error">Missing Price</span>}
-                {errors.price?.type === "min" && <span className="error">Must be positive</span>}
-            </div>
-            <div>
-                <label>Start Date: </label>
-                <input type="date" {...register("start_date", { required: true })} />
-                {errors.start_date?.type === "required" && <span className="error">Missing Start Date</span>}
-            </div>
-            <div>
-                <label>End Date: </label>
-                <input type="date" {...register("end_date", { required: true })} />
-                {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
-            </div>
-            <div className={resultClass}>
-                {resultMsg}
-            </div>
-            <button>Submit</button>
-        </form>
+                <Form.Group className="mb-3">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control className="input image" type="file"  {...register("image", { required: true })} />
+                    {errors.image?.type === "required" && <span className="error">Missing Image</span>}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control className="input price" type="number" {...register("price", { required: true, min: 0 })} />
+                    {errors.price?.type === "required" && <span className="error">Missing Price</span>}
+                    {errors.price?.type === "min" && <span className="error">Must be positive</span>}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Start Date</Form.Label>
+                    <Form.Control className="input start_date" type="date" {...register("start_date", { required: true })} />
+                    {errors.start_date?.type === "required" && <span className="error">Missing Start Date</span>}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>End Date</Form.Label>
+                    <Form.Control className="input end_date" type="date" {...register("end_date", { required: true })} />
+                    {errors.end_date?.type === "required" && <span className="error">Missing End Date</span>}
+                </Form.Group>
+                <div className={resultClass}>
+                    {resultMsg}
+                </div>
+                <Button variant="primary" type="submit" size="lg">
+                    Submit
+                </Button>
+            </Form>
     )
 }
 

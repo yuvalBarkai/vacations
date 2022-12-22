@@ -1,4 +1,6 @@
 {
+    "siteName":"Vacations",
+    "homePagePicName":"homepictrure.jpeg",
     "userSaveLocalStorageExpTime": 30,
     "localStorageSaveName": "savedToken",
     "expiredMsg":"Your session was expired, please reconnect",

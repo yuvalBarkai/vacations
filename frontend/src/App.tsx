@@ -1,21 +1,19 @@
-import './App.css';
+import './App.scss';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 import NavigationLinks from './routing/NavigationLinks';
 import Routing from './routing/Routing';
 import LocalUserSave from './services/LocalUserSave';
 import { signin, updateChecked } from './actions';
 import SocketService from './services/SocketService';
+import Footer from './components/Footer/Footer';
 
 function App() {
     const dispatch = useDispatch();
-
     useEffect(() => {
         (async () => {
             const success = await LocalUserSave.autoLoginAsync();
-            
             if (success) { // connects the user automaticly if success has values
                 dispatch(updateChecked(success.followedVac));
                 dispatch(signin(success.user));
@@ -25,21 +23,14 @@ function App() {
     }, [dispatch]);
 
     return (
-        <div className="App">
+        <div className="app">
             <BrowserRouter>
-                <header>
-                    <NavLink to={"/home"}><h1>Vacations</h1></NavLink>
-                </header>
-                <nav>
-                    <NavigationLinks />
-                </nav>
+                <NavigationLinks />
                 <main>
                     <Routing />
                 </main>
             </BrowserRouter>
-            <footer>
-                &copy; All Rights reservered
-            </footer>
+            <Footer />
         </div >
     );
 }

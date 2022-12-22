@@ -1,3 +1,4 @@
+import "./FollowStats.css"
 import { useSelector } from "react-redux"
 import { ReduxState } from "../../types"
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
@@ -24,7 +25,9 @@ function FollowStats() {
     return (
         <div>
             {followedVacations.length > 0 ?
-                <Bar data={data} />
+                <div className="chartWrapper">
+                    <Bar data={data} />
+                </div>
                 :
                 <h2>There aren't any followed vacations</h2>}
 

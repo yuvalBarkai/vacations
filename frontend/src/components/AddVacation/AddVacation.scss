@@ -1,0 +1,13 @@
+@use "../../abstracts.scss" as a;
+
+.addVacationForm {
+    font-size: a.$formFontSize ;
+    font-weight: 600;
+    padding-bottom: 25px;
+    .input {
+        font-size: a.$formFontSize - 5;
+        width: 410px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
