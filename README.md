@@ -15,6 +15,6 @@ for an admin that can delete, edit, add vacations.
 - Considering the sortVacations function I think the complexity is pretty high
   (around 4n log n) which made me think of another way but I didnt implement it
   because I wasnt sure it was better.  
-  (Having 2 arrays, one of followed vacations and one of notFollowedVacations)
+  (Having 2 arrays, one of followed vacations and one of unFollowedVacations)
 - I could have designed more but I focused more on the technical part because I prefer it
-  over designing although I do know that the design is a crucial part of the website.
+  over designing, although I do know that the design is a crucial part of the website.

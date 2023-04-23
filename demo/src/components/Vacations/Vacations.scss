@@ -1,0 +1,87 @@
+@use "../../abstracts.scss" as a;
+
+.vacationsContainer {
+    font-size: a.$cardsFontSize;
+
+    .image {
+        max-height: 350px;
+    }
+
+    .destination {
+        font-size: a.$cardsFontSize+15;
+    }
+
+    .userCard {
+        margin-top: 40px;
+    }
+
+    .adminCard {
+        margin-top: 40px;
+    }
+}
+
+.deleteBtn {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1000;
+    background-color: red;
+    height: 25px;
+    width: 25px;
+}
+
+.editBtn {
+    position: absolute;
+    right: 0px;
+    top: 40px;
+    z-index: 1000;
+    background-color: #e7e7e7;
+    height: 45px;
+    width: 35px;
+    border-radius: 20%;
+    margin-top: 10px;
+}
+
+.follow {
+    float: left;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1000;
+    background-color: #808080;
+    opacity: 0.8;
+    padding: 5px;
+    color: #FFFFFF;
+    font-weight: bold;
+
+    label {
+        font-size: 18px;
+    }
+
+    input[type="checkbox"] {
+        vertical-align: middle;
+        height: 25px;
+        width: 25px;
+    }
+}
+
+.homeImg {
+    background-image: url("../../assets/homeImg.jpg");
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    background-color: #ffe1593c; /* Used if the image is unavailable */
+    min-height: 650px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+.homeMsg {
+    opacity: 0.8;
+    font-size: a.$cardsFontSize+20;
+    font-weight: 900;
+    background: linear-gradient(to right, #099f9f 0%, #6220b3 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

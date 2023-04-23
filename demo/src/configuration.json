@@ -1,0 +1,16 @@
+{
+    "siteName":"Vacations",
+    "homePagePicName":"homepictrure.jpeg",
+    "userSaveLocalStorageExpTime": 30,
+    "localStorageSaveName": "savedToken",
+    "expiredMsg":"Your session was expired, please reconnect",
+    "adminListUserId":[1],
+    
+    "serverLoginAddr": "http://localhost:5000/auth/login",
+    "serverGetFollowsAddr": "http://localhost:5000/medium/followed",
+    "serverRegisterAddr": "http://localhost:5000/public/register",
+    "serverPostVacationAddr": "http://localhost:5000/admin/vacations",
+    "serverPutVacationAddr": "http://localhost:5000/admin/vacations",
+    "serverDeleteVacationAddr": "http://localhost:5000/admin/vacations",
+    "serverPatchFollowAddr": "http://localhost:5000/medium/follow"
+}

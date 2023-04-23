@@ -16,7 +16,7 @@ import { Button } from "react-bootstrap";
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginType>();
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginType>(); 
     const [error, setError] = useState("");
     /**
      * - Tries to login the user.

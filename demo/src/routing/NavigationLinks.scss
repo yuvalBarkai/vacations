@@ -1,0 +1,21 @@
+@use "../abstracts.scss" as a;
+
+.vacationsLink {
+    font-size: 60px;
+    font-size: a.$headerFontSize !important;
+    
+}
+
+.loginBtn{
+    font-size: a.$headerFontSize - 30 !important;
+}
+
+.logoutBtn{
+    font-size: a.$headerFontSize - 40 !important;
+    vertical-align: top;
+}
+
+.firstName {
+    font-size: a.$headerFontSize - 30;
+    padding-right: 20px;
+}
